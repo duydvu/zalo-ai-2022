@@ -99,7 +99,7 @@ list_df = []
 for f in glob.glob('/data/*.json'):
     print(f'Found file {f}')
     private_test = json.load(open(f, 'r'))
-    df = pd.DataFrame.from_dict(private_test)
+    df = pd.DataFrame.from_dict(private_test['data'])
 
     lst_predict = []
     for index, row in tqdm(df.iterrows()):
