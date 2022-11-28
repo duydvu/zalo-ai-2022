@@ -1,6 +1,6 @@
 #!/bin/bash
 
-python -m pyserini.index.lucene \
+python3 -m pyserini.index.lucene \
     --collection JsonCollection \
     --input data/pyserini2 \
     --language vi \
@@ -8,7 +8,7 @@ python -m pyserini.index.lucene \
     --generator DefaultLuceneDocumentGenerator \
     --threads 20
 
-python -m pyserini.index.lucene \
+python3 -m pyserini.index.lucene \
     --collection JsonCollection \
     --input data/pyserini_tokenized2 \
     --language vi \
