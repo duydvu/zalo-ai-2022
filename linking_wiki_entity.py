@@ -60,6 +60,15 @@ def predict_type(question):
 
 
 def extract_answer(question, candidate):
+    candidate_title = []
+    for answer in TITLE:
+
+        if len(answer) >= len(candidate) and all(x in answer.lower().split() for x in candidate.lower().split()):
+            candidate_title.append(answer)
+
+        if answer.lower() == candidate.lower():
+            break
+    
     if not candidate:
         return None
 
@@ -124,5 +133,9 @@ def extract_answer(question, candidate):
         for word in TITLE[int(title_id)].lower().split():
             if word not in candidate.lower():
                 title_candidates[title_id] -= 1
-
-    return f'wiki/{"_".join(TITLE[int(max(title_candidates, key=title_candidates.get))].split())}' if title_candidates else None
+    
+    for k, v in sorted(title_candidates.items(), key=lambda _: _[1], reverse=True):
+    if TITLE[int(k)] in candidate_title or TITLE[int(k)] == candidate_title:
+        return f'wiki/{"_".join(TITLE[int(k)].split())}'
+    return None
+#     return f'wiki/{"_".join(TITLE[int(max(title_candidates, key=title_candidates.get))].split())}' if title_candidates else None
