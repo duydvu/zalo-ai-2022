@@ -3,7 +3,7 @@ import glob
 import os
 from time import time
 
-from .document_retriever import retrieve_documents, load_model as load_retriver_model, vncorenlp_model
+from document_retriever import retrieve_documents, load_model as load_retriver_model, vncorenlp_model
 
 import pandas as pd
 import string
