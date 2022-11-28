@@ -1,3 +1,3 @@
 #!/bin/sh
 
-python3 predict.py
+python3 /code/predict.py
