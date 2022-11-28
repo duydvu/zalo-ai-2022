@@ -11,7 +11,7 @@ import string
 
 
 
-ROOT_DIR = '/code'
+ROOT_DIR = '/code/tai_data'
 
 
 with open(f'{ROOT_DIR}/vietnamese-stopwords-dash.md', 'r') as f:
