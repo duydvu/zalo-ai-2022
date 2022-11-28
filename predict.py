@@ -18,7 +18,7 @@ import string
 from transformers import pipeline
 
 
-import entity_linking
+import linking_wiki_entity
 from utils import word_normalizer, word_tokenizer, strip_context
 
 
@@ -26,6 +26,7 @@ ROOT_DIR = '/code'
 
 
 load_retriver_model()
+linking_wiki_entity.load_title()
 
 # Load model
 model_checkpoint = f"{ROOT_DIR}/model/vi-mrc-large"
@@ -92,7 +93,7 @@ def predict(item):
             short_candidate = predicted_answer[0][0]
 
 
-    result = entity_linking.linking_wiki_entity(item['question'], short_candidate)
+    result = linking_wiki_entity.extract_answer(item['question'], short_candidate)
 
     return result
 
