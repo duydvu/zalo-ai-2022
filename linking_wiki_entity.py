@@ -60,6 +60,9 @@ def predict_type(question):
 
 
 def extract_answer(question, candidate):
+    if not candidate:
+        return None
+    
     candidate_title = []
     for answer in TITLE:
 
@@ -68,9 +71,6 @@ def extract_answer(question, candidate):
 
         if answer.lower() == candidate.lower():
             break
-    
-    if not candidate:
-        return None
 
     answer_type = predict_type(question)
 
