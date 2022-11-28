@@ -22,6 +22,7 @@ wiki_question_entity = '(ai)|(ở đâu)|(gì)|(vì sao)|(tại sao)'
 
 
 def load_title():
+    print('Loading entity models...')
     global TITLE, lower_title, inverted_title
     with open(f'{ROOT_DIR}/data/wikipedia_20220620_all_titles.txt') as f:
         TITLE = f.read().split('\n')

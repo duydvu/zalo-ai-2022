@@ -12,6 +12,7 @@ ngram_searcher = None
 
 
 def load_model():
+    print('Loading retrieval models...')
     global vncorenlp_model, paragraphs, uni_searcher, ngram_searcher
     vncorenlp_model = VnCoreNLP(f'{ROOT_DIR}/VnCoreNLP-1.1.1.jar', annotators="wseg,pos,parse")
 

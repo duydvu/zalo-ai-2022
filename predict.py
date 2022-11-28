@@ -1,7 +1,6 @@
 import json
 import glob
 import os
-from time import time
 
 from document_retriever import retrieve_documents, load_model as load_retriver_model, vncorenlp_model
 
@@ -9,10 +8,7 @@ import pandas as pd
 import string
 import json
 from tqdm.notebook import tqdm
-from vncorenlp import VnCoreNLP
 
-import nltk
-nltk.download('punkt')
 from collections import Counter
 import string
 from transformers import pipeline
@@ -29,6 +25,7 @@ load_retriver_model()
 linking_wiki_entity.load_title()
 
 # Load model
+print('Loading QA models...')
 model_checkpoint = f"{ROOT_DIR}/model/vi-mrc-large"
 nlp = pipeline('question-answering', model=model_checkpoint, tokenizer=model_checkpoint, device=0)
 
@@ -100,7 +97,7 @@ def predict(item):
 
 list_df = []
 for f in glob.glob('/data/*.json'):
-
+    print(f'Found file {f}')
     private_test = json.load(open(f, 'r'))
     df = pd.DataFrame.from_dict(private_test)
 
@@ -119,6 +116,3 @@ results = df.to_dict('record')
 output_dir = '/result'
 os.makedirs(output_dir, exist_ok=True)
 json.dump({ 'data': results }, open(f'{output_dir}/submission.json', 'w'))
-    
-
-
