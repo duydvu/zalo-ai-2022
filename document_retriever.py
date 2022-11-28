@@ -5,19 +5,26 @@ from tqdm.notebook import tqdm
 from vncorenlp import VnCoreNLP
 
 ROOT_DIR = '/code/zalo-ai-2022'
+vncorenlp_model = None
+paragraphs = None
+uni_searcher = None
+ngram_searcher = None
 
-vncorenlp_model = VnCoreNLP(f'{ROOT_DIR}/VnCoreNLP-1.1.1.jar', annotators='wseg')
 
-paragraphs = []
-with open(f'{ROOT_DIR}/data/paragraphs2.jsonl', 'r') as f:
-    for line in tqdm(f):
-        paragraphs.append(json.loads(line))
-print(len(paragraphs))
+def load_model():
+    global vncorenlp_model, paragraphs, uni_searcher, ngram_searcher
+    vncorenlp_model = VnCoreNLP(f'{ROOT_DIR}/VnCoreNLP-1.1.1.jar', annotators='wseg')
 
-uni_searcher = LuceneSearcher(f'{ROOT_DIR}/indexes/paragraphs2')
-uni_searcher.set_language('vi')
-ngram_searcher = LuceneSearcher(f'{ROOT_DIR}/indexes/paragraphs_tokenized2')
-ngram_searcher.set_language('vi')
+    paragraphs = []
+    with open(f'{ROOT_DIR}/data/paragraphs2.jsonl', 'r') as f:
+        for line in tqdm(f):
+            paragraphs.append(json.loads(line))
+    print(len(paragraphs))
+
+    uni_searcher = LuceneSearcher(f'{ROOT_DIR}/indexes/paragraphs2')
+    uni_searcher.set_language('vi')
+    ngram_searcher = LuceneSearcher(f'{ROOT_DIR}/indexes/paragraphs_tokenized2')
+    ngram_searcher.set_language('vi')
 
 
 def clean(text: str):
