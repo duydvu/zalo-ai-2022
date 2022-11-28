@@ -2,7 +2,7 @@ import json
 import glob
 import os
 
-from document_retriever import retrieve_documents, load_model as load_retriver_model, vncorenlp_model
+from document_retriever import retrieve_documents, load_model as load_retriver_model
 
 import pandas as pd
 import string
@@ -21,7 +21,7 @@ from utils import word_normalizer, word_tokenizer, strip_context
 ROOT_DIR = '/code'
 
 
-load_retriver_model()
+vncorenlp_model = load_retriver_model()
 linking_wiki_entity.load_title()
 
 # Load model

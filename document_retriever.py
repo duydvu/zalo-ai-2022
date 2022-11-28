@@ -26,6 +26,7 @@ def load_model():
     uni_searcher.set_language('vi')
     ngram_searcher = LuceneSearcher(f'{ROOT_DIR}/indexes/paragraphs_tokenized2')
     ngram_searcher.set_language('vi')
+    return vncorenlp_model
 
 
 def clean(text: str):
