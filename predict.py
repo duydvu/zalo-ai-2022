@@ -19,13 +19,13 @@ from transformers import pipeline
 from test import utils, entity_linking
 
 
-PATH_ROOT = 'datasets'
+ROOT_DIR = '/code/zalo-ai-2022'
 
 
 load_retriver_model()
 
 # Load model
-model_checkpoint = "model/vi-mrc-large"
+model_checkpoint = f"{ROOT_DIR}/model/vi-mrc-large"
 nlp = pipeline('question-answering', model=model_checkpoint, tokenizer=model_checkpoint, device=0)
 
 
@@ -34,7 +34,7 @@ nlp = pipeline('question-answering', model=model_checkpoint, tokenizer=model_che
 
 def predict(item):
 
-    docs = retrieve_documents(item['question'])
+    docs = retrieve_documents(item['question'], k=50)
     ner = lambda t: [ [(v["form"],v["posTag"]) for v in s] for s in vncorenlp_model.annotate(t)["sentences"] ]
 
     inputs = []
@@ -93,6 +93,28 @@ def predict(item):
 
     return result
 
+
+list_df = []
+for f in glob.glob('/data/*.json'):
+
+    private_test = json.load(open(f, 'r'))
+    df = pd.DataFrame.from_dict(private_test)
+
+    lst_predict = []
+    for index, row in tqdm(df.iterrows()):
+        lst_predict.append(predict(row))
+    df['answer'] = lst_predict
+
+    list_df.append(df)
+
+
+df = pd.concat(list_df)
+
+results = df.to_dict('record')
+
+output_dir = '/result'
+os.makedirs(output_dir, exist_ok=True)
+json.dump({ 'data': results }, open(f'{output_dir}/submission.json', 'w'))
     
 
 
