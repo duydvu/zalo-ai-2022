@@ -135,7 +135,7 @@ def extract_answer(question, candidate):
                 title_candidates[title_id] -= 1
     
     for k, v in sorted(title_candidates.items(), key=lambda _: _[1], reverse=True):
-    if TITLE[int(k)] in candidate_title or TITLE[int(k)] == candidate_title:
-        return f'wiki/{"_".join(TITLE[int(k)].split())}'
+        if TITLE[int(k)] in candidate_title or TITLE[int(k)] == candidate_title:
+            return f'wiki/{"_".join(TITLE[int(k)].split())}'
     return None
 #     return f'wiki/{"_".join(TITLE[int(max(title_candidates, key=title_candidates.get))].split())}' if title_candidates else None
