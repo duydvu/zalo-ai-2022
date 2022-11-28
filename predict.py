@@ -116,4 +116,4 @@ if __name__ == '__main__':
 
     output_dir = '/result'
     os.makedirs(output_dir, exist_ok=True)
-    json.dump({ 'data': results }, open(f'{output_dir}/submission.json', 'w'))
+    json.dump({ 'data': results }, open(f'{output_dir}/submission.json', 'w'), ensure_ascii=False)
