@@ -7,7 +7,7 @@ from document_retriever import retrieve_documents, load_model as load_retriver_m
 import pandas as pd
 import string
 import json
-from tqdm.notebook import tqdm
+from tqdm import tqdm
 
 from collections import Counter
 import string

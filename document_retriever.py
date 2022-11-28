@@ -1,7 +1,7 @@
 from pyserini.search.lucene import LuceneSearcher
 import re
 import json
-from tqdm.notebook import tqdm
+from tqdm import tqdm
 from vncorenlp import VnCoreNLP
 
 ROOT_DIR = '/code'
