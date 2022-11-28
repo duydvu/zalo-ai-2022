@@ -1,11 +1,25 @@
 
+from glob import glob
+import pandas as pd
+
 import re
+import nltk
+nltk.download('punkt')
 from nltk import word_tokenize as lib_tokenizer
+from cleantext import clean
+import string
+
+
+
+ROOT_DIR = '/code'
+
+
+with open(f'{ROOT_DIR}/vietnamese-stopwords-dash.md', 'r') as f:
+    STOPWORDS = f.read().split('\n')
 
 dict_map = dict({})
 
-
-def word_tokenize(text):
+def word_tokenizer(text):
     global dict_map
     words = text.split()
     words_norm = []
@@ -15,6 +29,30 @@ def word_tokenize(text):
         words_norm.append(dict_map[w])
     return words_norm
 
+def word_normalizer(text):
+    text = re.sub(r'http\S+', ' ', text)
+    text = re.sub(r'<[^>]+>', ' ', text)
+    text = re.sub(r'ynm\w*', ' ', re.sub(r"'RE:(?=[^']*')", ' ', text))
+    text = clean(text, no_emoji=True, to_ascii=False, no_line_breaks=True, lower=False)
+
+    EMOJI_PATTERNS = [
+        '[:=]\)+',
+        '[:=]\(+',
+        '<3',
+        ':[<>v3]',
+    ]
+    for emoji_pattern in EMOJI_PATTERNS:
+        text = re.sub(emoji_pattern, ' ', text)
+
+    text = re.sub(r"\s+", " ", text)
+    text = re.sub(r'[^\x00-\x7F\x80-\xFF\u0100-\u017F\u0180-\u024F\u1E00-\u1EFF]', ' ', text)
+    
+    text = text.replace("BULLET : : : :", "")
+    text = text.replace("=", "")
+    text = text.replace("/", "")
+    text = text.replace("`", "")
+    
+    return text
 
 def strip_answer_string(text):
     text = text.strip()
@@ -37,3 +75,11 @@ def strip_context(text):
     text = re.sub(r'\s+', ' ', text)
     text = text.strip()
     return text
+
+    
+def remove_stopwords(text):
+    res = []
+    for w in text:
+        if w not in STOPWORDS:
+            res.append(w)
+    return ' '.join(res)

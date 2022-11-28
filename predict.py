@@ -16,10 +16,13 @@ nltk.download('punkt')
 from collections import Counter
 import string
 from transformers import pipeline
-from test import utils, entity_linking
 
 
-ROOT_DIR = '/code/zalo-ai-2022'
+import entity_linking
+from utils import word_normalizer, word_tokenizer, strip_context
+
+
+ROOT_DIR = '/code'
 
 
 load_retriver_model()
@@ -59,10 +62,10 @@ def predict(item):
         if text == '':
             continue
         
-        text = utils.word_normalizer(text)
-        context = utils.strip_context(text)
-        context = ' '.join(utils.word_tokenizer(context))
-        question = ' '.join(utils.word_tokenizer(item['question']))
+        text = word_normalizer(text)
+        context = strip_context(text)
+        context = ' '.join(word_tokenizer(context))
+        question = ' '.join(word_tokenizer(item['question']))
 
         inputs.append({
             'question': question,
