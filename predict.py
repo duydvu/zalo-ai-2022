@@ -95,24 +95,25 @@ def predict(item):
     return result
 
 
-list_df = []
-for f in glob.glob('/data/*.json'):
-    print(f'Found file {f}')
-    private_test = json.load(open(f, 'r'))
-    df = pd.DataFrame.from_dict(private_test['data'])
+if __name__ == '__main__':
+    list_df = []
+    for f in glob.glob('/data/*.json'):
+        print(f'Found file {f}')
+        private_test = json.load(open(f, 'r'))
+        df = pd.DataFrame.from_dict(private_test['data'])
 
-    lst_predict = []
-    for index, row in tqdm(df.iterrows()):
-        lst_predict.append(predict(row))
-    df['answer'] = lst_predict
+        lst_predict = []
+        for index, row in tqdm(df.iterrows()):
+            lst_predict.append(predict(row))
+        df['answer'] = lst_predict
 
-    list_df.append(df)
+        list_df.append(df)
 
 
-df = pd.concat(list_df)
+    df = pd.concat(list_df)
 
-results = df.to_dict('record')
+    results = df.to_dict('record')
 
-output_dir = '/result'
-os.makedirs(output_dir, exist_ok=True)
-json.dump({ 'data': results }, open(f'{output_dir}/submission.json', 'w'))
+    output_dir = '/result'
+    os.makedirs(output_dir, exist_ok=True)
+    json.dump({ 'data': results }, open(f'{output_dir}/submission.json', 'w'))
