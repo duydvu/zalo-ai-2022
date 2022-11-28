@@ -4,7 +4,7 @@ import json
 from tqdm.notebook import tqdm
 from vncorenlp import VnCoreNLP
 
-ROOT_DIR = '/code/zalo-ai-2022'
+ROOT_DIR = '/code'
 vncorenlp_model = None
 paragraphs = None
 uni_searcher = None
