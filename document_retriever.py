@@ -13,7 +13,7 @@ ngram_searcher = None
 
 def load_model():
     global vncorenlp_model, paragraphs, uni_searcher, ngram_searcher
-    vncorenlp_model = VnCoreNLP(f'{ROOT_DIR}/VnCoreNLP-1.1.1.jar', annotators='wseg')
+    vncorenlp_model = VnCoreNLP(f'{ROOT_DIR}/VnCoreNLP-1.1.1.jar', annotators="wseg,pos,parse")
 
     paragraphs = []
     with open(f'{ROOT_DIR}/data/paragraphs2.jsonl', 'r') as f:

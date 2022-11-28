@@ -3,7 +3,7 @@ import glob
 import os
 from time import time
 
-from .document_retriever import retrieve_documents, load_model as load_retriver_model
+from .document_retriever import retrieve_documents, load_model as load_retriver_model, vncorenlp_model
 
 import pandas as pd
 import string
@@ -16,7 +16,7 @@ nltk.download('punkt')
 from collections import Counter
 import string
 from transformers import pipeline
-from test import utils, document_retrieval, entity_linking
+from test import utils, entity_linking
 
 
 PATH_ROOT = 'datasets'
@@ -27,7 +27,6 @@ load_retriver_model()
 # Load model
 model_checkpoint = "model/vi-mrc-large"
 nlp = pipeline('question-answering', model=model_checkpoint, tokenizer=model_checkpoint, device=0)
-model_retrieve = VnCoreNLP("VnCoreNLP/VnCoreNLP-1.1.1.jar",annotators="wseg,pos,parse")
 
 
 
@@ -35,8 +34,8 @@ model_retrieve = VnCoreNLP("VnCoreNLP/VnCoreNLP-1.1.1.jar",annotators="wseg,pos,
 
 def predict(item):
 
-    docs = document_retrieval.retrieve_documents(item['question'])
-    ner = lambda t: [ [(v["form"],v["posTag"]) for v in s] for s in model_retrieve.annotate(t)["sentences"] ]
+    docs = retrieve_documents(item['question'])
+    ner = lambda t: [ [(v["form"],v["posTag"]) for v in s] for s in vncorenlp_model.annotate(t)["sentences"] ]
 
     inputs = []
     for doc in docs:
@@ -72,7 +71,7 @@ def predict(item):
 
 
     if len(inputs) == 0:
-        short_candidate = "null"
+        short_candidate = None
     
     else:
         extracted_answer = nlp(inputs, batch_size=len(inputs), truncation=True)
@@ -85,7 +84,7 @@ def predict(item):
         predicted_answer = Counter([item['answer'] for item in top_extracted_answer]).most_common(1)
         
         if len(predicted_answer) == 0:
-            short_candidate = "null"
+            short_candidate = None
         else:
             short_candidate = predicted_answer[0][0]
 
