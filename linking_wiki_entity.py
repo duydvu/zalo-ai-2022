@@ -22,14 +22,13 @@ wiki_question_entity = '(ai)|(ở đâu)|(gì)|(vì sao)|(tại sao)'
 
 
 def load_title():
-    print('Loading entity models...')
     global TITLE, lower_title, inverted_title
-    with open(f'{ROOT_DIR}/data/wikipedia_20220620_all_titles.txt') as f:
+    with open(f'{ROOT_DIR}/wikipedia_20220620_cleaned/wikipedia_20220620_all_titles.txt') as f:
         TITLE = f.read().split('\n')
     lower_title = [
         re.sub(r'\s+', ' ', re.sub(fr'([{string.punctuation}\\])', ' ', t)).strip().lower() for t in TITLE
     ]
-    with open(f'{ROOT_DIR}/data/inverted_title_v3.json', 'r') as f:
+    with open(f'{ROOT_DIR}/tai_data/inverted_title_v3.json', 'r') as f:
         inverted_title = defaultdict(dict, json.load(f))
 
 
@@ -60,6 +59,9 @@ def predict_type(question):
 
 
 def extract_answer(question, candidate):
+    if not candidate:
+        return None
+
     answer_type = predict_type(question)
 
     if answer_type == 3:
