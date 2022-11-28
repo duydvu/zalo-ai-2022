@@ -3,9 +3,8 @@ import re
 import string
 from collections import defaultdict
 
-from py_vncore import model
+# from py_vncore import model
 from roman import romanToDecimal
-
 
 with open('wikipedia_20220620_cleaned/wikipedia_20220620_all_titles.txt') as f:
     TITLE = f.read().split('\n')
@@ -105,23 +104,12 @@ def extract_answer(question, candidate):
     if re.sub(r'\s+', ' ', re.sub(fr'([{string.punctuation}\\])', ' ', candidate)).strip().lower() in lower_title:
         return f'wiki/{"_".join(candidate.split())}'
 
-    try:
-        ner = model.annotate_text(candidate.lower())[0]
-    except Exception:
-        return None
-
-    for token in ner:
-        word = token['wordForm']
+    for word in candidate.lower().split():
         for title_id, weight in inverted_title[word].items():
             title_candidates[title_id] += weight
 
     for title_id in title_candidates.keys():
-        try:
-            ner = model.annotate_text(TITLE[int(title_id)].lower())[0]
-        except Exception:
-            return None
-        for token in ner:
-            word = token['wordForm']
+        for word in TITLE[int(title_id)].lower().split():
             if word not in candidate.lower():
                 title_candidates[title_id] -= 1
 
